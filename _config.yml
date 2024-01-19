@@ -3,14 +3,21 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
-subtitle: ''
-description: ''
-keywords:
-author: John Doe
-language: en
+title: 永夜
+subtitle: '天行健，君子以自强不息'
+description: '心有所向，无问东西'
+keywords: 
+author: Mr.yuan
+language: zh-CN
 timezone: ''
 
+symbols_count_time:
+   #文章内是否显示
+    symbols: true
+    time: true
+   # 网页底部是否显示
+    total_symbols: true
+    total_time: true
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
 url: https://yuanyongliang1.github.io
@@ -97,7 +104,8 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
+# theme: landscape 
+theme: hexo-theme-next 
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
@@ -105,3 +113,5 @@ deploy:
   type: git
   repo: git@github.com:yuanyongliang1/yuanyongliang1.github.io.git
   branch: master
+
+
