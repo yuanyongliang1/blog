@@ -1,9 +1,10 @@
 ---
 title: 一文读懂 ConcurrentHashMap 原理
-date: 2014-02-18 12:54:28
-comments: true
-type: 文章
-categories: java基础
+date: 2024-02-18 12:54:28
+tags: 
+ - 文章
+categories: 
+ - java基础
 ---
 
 
@@ -20,4 +21,6 @@ categories: java基础
 HashTable容器使用synchronized来保证线程安全，但在线程竞争激烈的情况下HashTable的效率非常低，因为当一个线程正在访问HashTable的同步方法时，这时，另外一个线程也来访问HashTable的同步方法， 可能会进入阻塞和轮询状态。如线程A使用put进行添加元素的时候，线程B不但不能使用put方法添加元素，而且不能使用get方法获取元素，所以竞争越激烈效率越低，也就是说对于HashTable而言，synchronized是针对Hash整张表的，即每次锁住整张表让线程独占，相当于所有线程进行读写的时候都去竞争一把锁。
 
 #### ConcurrentHashMap的锁分段技术
+
+编写
 
