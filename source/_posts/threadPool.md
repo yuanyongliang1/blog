@@ -1,8 +1,8 @@
 ---
 title: threadPool
 date: 2024-02-21 14:14:52
-type: 
- - java基础
+tags: 
+ - 文章
 categories: 
  - 线程池
 ---
