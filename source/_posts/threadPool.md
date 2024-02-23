@@ -2,9 +2,9 @@
 title: threadPool
 date: 2024-02-21 14:14:52
 tags: 
- - 文章
-categories: 
  - 线程池
+categories: 
+ - 多线程
 ---
 
 #### 线程池的核心参数以及具体场景下核心参数怎么设置合适

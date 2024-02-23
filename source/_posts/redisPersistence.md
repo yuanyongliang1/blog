@@ -2,9 +2,9 @@
 title: redisPersistence
 date: 2024-02-21 15:21:32
 tags:
- - 文章
-categories:
  - redis持久化
+categories:
+ - redis
 ---
 
 
