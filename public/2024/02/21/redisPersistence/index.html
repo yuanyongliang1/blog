@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yuanyongliang1.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="redis持久化redis持久化分为RDB和AOF: ​	RDB：RDB持久化就是在指定时间间隔内将内存中的数据集快照写入磁盘，也就是snapshot，它恢复时是直接将快照文件直接读到内存里。 RDB触发的方式有几种：两种，分别是手动触发和自动触发    触发方式 实现方式 特性    手动触发 save命令 这个指令会直接阻塞当前redis服务器，直到RDB完成了为止    bgsave命令 主">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redisPersistence">
+<meta property="og:url" content="https://yuanyongliang1.github.io/2024/02/21/redisPersistence/index.html">
+<meta property="og:site_name" content="永夜">
+<meta property="og:description" content="redis持久化redis持久化分为RDB和AOF: ​	RDB：RDB持久化就是在指定时间间隔内将内存中的数据集快照写入磁盘，也就是snapshot，它恢复时是直接将快照文件直接读到内存里。 RDB触发的方式有几种：两种，分别是手动触发和自动触发    触发方式 实现方式 特性    手动触发 save命令 这个指令会直接阻塞当前redis服务器，直到RDB完成了为止    bgsave命令 主">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-02-21T07:21:32.000Z">
+<meta property="article:modified_time" content="2024-02-23T02:12:34.551Z">
+<meta property="article:author" content="Mr.yuan">
+<meta property="article:tag" content="redis持久化">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://yuanyongliang1.github.io/2024/02/21/redisPersistence/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://yuanyongliang1.github.io/2024/02/21/redisPersistence/","path":"2024/02/21/redisPersistence/","title":"redisPersistence"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>redisPersistence | 永夜</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">永夜</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">天行健，君子以自强不息</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-id-card fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-folder-open fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-schedule"><a href="/schedule/" rel="section"><i class="fa fa-calculator fa-fw"></i>日程表</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#redis%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-number">1.</span> <span class="nav-text">redis持久化</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Mr.yuan"
+      src="/images/photo.jpg">
+  <p class="site-author-name" itemprop="name">Mr.yuan</p>
+  <div class="site-description" itemprop="description">心有所向，无问东西</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yuanyongliang1.github.io/2024/02/21/redisPersistence/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/photo.jpg">
+      <meta itemprop="name" content="Mr.yuan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永夜">
+      <meta itemprop="description" content="心有所向，无问东西">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="redisPersistence | 永夜">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          redisPersistence
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-02-21 15:21:32" itemprop="dateCreated datePublished" datetime="2024-02-21T15:21:32+08:00">2024-02-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-02-23 10:12:34" itemprop="dateModified" datetime="2024-02-23T10:12:34+08:00">2024-02-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h4 id="redis持久化"><a href="#redis持久化" class="headerlink" title="redis持久化"></a>redis持久化</h4><p>redis持久化分为RDB和AOF:</p>
+<p>​	RDB：RDB持久化就是在指定时间间隔内将内存中的数据集快照写入磁盘，也就是<code>snapshot</code>，它恢复时是直接将快照文件直接读到内存里。</p>
+<p>RDB触发的方式有几种：两种，分别是手动触发和自动触发</p>
+<table>
+<thead>
+<tr>
+<th>触发方式</th>
+<th>实现方式</th>
+<th>特性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>手动触发</td>
+<td>save命令</td>
+<td>这个指令会直接阻塞当前redis服务器，直到RDB完成了为止</td>
+</tr>
+<tr>
+<td></td>
+<td>bgsave命令</td>
+<td>主进程fork一个子进程，由子进程完成持久化操作，<br />而主进程继续处理客户端的读写请求，<br />如果需要手动实现持久化，推荐使用这这种方式</td>
+</tr>
+<tr>
+<td>自动触发</td>
+<td>配置redis.conf的save参数</td>
+<td>save 20 3 代表的是在20s内写入3次就进行持久化</td>
+</tr>
+</tbody></table>
+<p><strong>bgsave的工作流程：</strong></p>
+<ul>
+<li>主进程fork出一个子进程，这时候主进程会被阻塞</li>
+<li>子进程创建完成后，<code>redis</code>客户端会输出 <code>Background saving started</code>,这就意味着子进程开始进行持久化操作了	</li>
+<li>子进程持久化完成后会生成一个rdb文件，将本次的rdb文件通过原子替换的方式将上一次备份的rdb文件覆盖</li>
+<li>子进程发送信号通知父进程本次任务完成</li>
+</ul>
+<p><strong>RDB常见的配置参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>dbfilename</td>
+<td>指定rdb的文件名</td>
+</tr>
+<tr>
+<td>dir</td>
+<td>指定rdb文件的持久化位置，默认取redis服务端的位置</td>
+</tr>
+<tr>
+<td>rdbcompression</td>
+<td>开启后redis默认使用LZF算法压缩rdb文件，这种方式会消耗CPU，但是压缩后的大小远远小于内存</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>RDB的优点和缺点：</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>优点</td>
+<td>RDB是一个紧凑的单一文件，很方便传送到另一个远端数据中心，非常适合用于灾难回复<br />在恢复较大的数据集时，RDb方式会更快一些</td>
+</tr>
+<tr>
+<td>缺点</td>
+<td>RDB没办法做到实时持久化，bgsave每次fork子进程都会阻塞，频繁执行成本较高<br />在一定间隔时间做备份，如果redis意外down掉，就会丢失最后一次快照之后的所有修改</td>
+</tr>
+</tbody></table>
+<p><strong>AOF：</strong>默认情况下，redis没有开启AOF，开启配置需要在配置文件中将<code>appendonly</code> 改为 yes，AOF会以日志的形式来记录每个写操作，将Redis执行过的所有指令记录下来，只需追加文件不许修改文件，<code>redis</code>启动时会读取该文件重新构建数据。</p>
+<p><strong>AOF的触发类型：</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th>参数说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">appendfsync always</td>
+<td>同步持久化，每次放生数据变化就会立马写入磁盘，新能比较差但数据完整性比较好</td>
+</tr>
+<tr>
+<td align="left">appendfsync  everysec</td>
+<td>默认推荐，每次异步记录一次</td>
+</tr>
+<tr>
+<td align="left">appendfsync no</td>
+<td>不同步</td>
+</tr>
+</tbody></table>
+<p><strong>配置重写触发机制：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">auto-aof-rewrite-percentage 100</span><br><span class="line">auto-aof-rewrite-min-size 64mb</span><br></pre></td></tr></table></figure>
+
+<p><strong>参数说明：</strong>当AOF文件大小是上一次大小的一倍并且大于64mb时触发</p>
+<p><strong>根据AOF恢复数据：</strong></p>
+<p>正常情况下，将<code>appendonly.aof</code>文件复制到bin目录下，并且重启<code>redis</code>服务即可，在实际开发中，文件会存储在网络设备上，保障数据高可靠，如果因为某些原因导致<code>appendonly.aof</code>文件格式异常，从而导致数据还原失败，可以通过命令<code>redis-check-aof --fix appendonly.aof</code>进行修复</p>
+<p><strong>AOF的重写压缩机制：</strong></p>
+<p>AOF的工作原理将每次写操作追加到文件中，这样文件会出现很多冗余内容，所以redis新增了重写机制</p>
+<p>AOF可以生成一个新的AOF文件，新文件和老文件保存的信息一样，但体积更小，还可以做命令的合并，进而节省了redis的储存空间</p>
+<p><strong>AOF重写流程：</strong></p>
+<ul>
+<li>把主线程的内存拷贝一份给fork出来的<code>bgrewiteaof</code>子进程，这里面包含lredis最新的数据</li>
+<li>子进程将其中的数据进行重写。</li>
+<li>主线程在重写时候维护一个AOF重写缓冲区，将重写过程中的写操作记录，计入其中，保证重写后的AOF日志也能记录在重写过程中产生的新数据 </li>
+<li>用新AOF替换老AOF</li>
+</ul>
+<p><strong>AOF的优点和缺点：</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>优点</td>
+<td>数据的完整性和一致性更高</td>
+</tr>
+<tr>
+<td>缺点</td>
+<td>因为AOF记录的内容多，文件只会越来越大，数据恢复也会越来越慢</td>
+</tr>
+</tbody></table>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/redis%E6%8C%81%E4%B9%85%E5%8C%96/" rel="tag"># redis持久化</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/02/21/threadPool/" rel="prev" title="threadPool">
+                  <i class="fa fa-angle-left"></i> threadPool
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/02/23/thread/" rel="next" title="threadLifecycle">
+                  threadLifecycle <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Mr.yuan</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">15k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">13 分钟</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        本站总访客数：<span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        本站总访问量：<span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

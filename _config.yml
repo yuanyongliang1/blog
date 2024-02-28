@@ -11,6 +11,9 @@ author: Mr.yuan
 language: zh-CN
 timezone: ''
 
+encrypt:
+    enable: true
+
 symbols_count_time:
    #文章内是否显示
     symbols: true

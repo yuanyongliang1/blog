@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yuanyongliang1.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="1．Linux管理文件和目录的命令   命令 功能    pwd 显当前目录   ls 查看目录下的内容   cd 改变所在目录   cat 显示文件的内容   grep 在文件中查找某字符   cp 复制文件   touch 创建文件   mv 移动文件   rm 删除文件   rmdir 删除目录   vi 编辑文件   1.1 pwd命令该命令的英文解释为print working dire">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linuxOrder">
+<meta property="og:url" content="https://yuanyongliang1.github.io/2023/09/12/linuxOrder/index.html">
+<meta property="og:site_name" content="永夜">
+<meta property="og:description" content="1．Linux管理文件和目录的命令   命令 功能    pwd 显当前目录   ls 查看目录下的内容   cd 改变所在目录   cat 显示文件的内容   grep 在文件中查找某字符   cp 复制文件   touch 创建文件   mv 移动文件   rm 删除文件   rmdir 删除目录   vi 编辑文件   1.1 pwd命令该命令的英文解释为print working dire">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-09-12T02:25:56.000Z">
+<meta property="article:modified_time" content="2024-02-28T03:11:23.345Z">
+<meta property="article:author" content="Mr.yuan">
+<meta property="article:tag" content="Linux常用命令">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://yuanyongliang1.github.io/2023/09/12/linuxOrder/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://yuanyongliang1.github.io/2023/09/12/linuxOrder/","path":"2023/09/12/linuxOrder/","title":"linuxOrder"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>linuxOrder | 永夜</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">永夜</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">天行健，君子以自强不息</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-id-card fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-folder-open fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-schedule"><a href="/schedule/" rel="section"><i class="fa fa-calculator fa-fw"></i>日程表</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%EF%BC%8ELinux%E7%AE%A1%E7%90%86%E6%96%87%E4%BB%B6%E5%92%8C%E7%9B%AE%E5%BD%95%E7%9A%84%E5%91%BD%E4%BB%A4"><span class="nav-number">1.</span> <span class="nav-text">1．Linux管理文件和目录的命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-pwd%E5%91%BD%E4%BB%A4"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 pwd命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-cd%E5%91%BD%E4%BB%A4-%E7%94%A8%E6%9D%A5%E6%94%B9%E5%8F%98%E6%89%80%E5%9C%A8%E7%9B%AE%E5%BD%95%E3%80%82"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 cd命令 用来改变所在目录。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-ls%E5%91%BD%E4%BB%A4-%E7%94%A8%E6%9D%A5%E6%9F%A5%E7%9C%8B%E7%9B%AE%E5%BD%95%E7%9A%84%E5%86%85%E5%AE%B9%E3%80%82"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 ls命令 用来查看目录的内容。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-cat%E5%91%BD%E4%BB%A4"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 cat命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-grep%E5%91%BD%E4%BB%A4-%E6%9C%80%E5%A4%A7%E5%8A%9F%E8%83%BD%E6%98%AF%E5%9C%A8%E4%B8%80%E5%A0%86%E6%96%87%E4%BB%B6%E4%B8%AD%E6%9F%A5%E6%89%BE%E4%B8%80%E4%B8%AA%E7%89%B9%E5%AE%9A%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%82"><span class="nav-number">1.5.</span> <span class="nav-text">1.5 grep命令 最大功能是在一堆文件中查找一个特定的字符串。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-touch%E5%91%BD%E4%BB%A4"><span class="nav-number">1.6.</span> <span class="nav-text">1.6 touch命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-7-cp%E5%91%BD%E4%BB%A4-%E7%94%A8%E6%9D%A5%E6%8B%B7%E8%B4%9D%E6%96%87%E4%BB%B6%EF%BC%8C%E8%A6%81%E5%A4%8D%E5%88%B6%E6%96%87%E4%BB%B6%EF%BC%8C%E8%BE%93%E5%85%A5%E5%91%BD%E4%BB%A4%EF%BC%9A"><span class="nav-number">1.7.</span> <span class="nav-text">1.7 cp命令 用来拷贝文件，要复制文件，输入命令：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-8-mv%E5%91%BD%E4%BB%A4-%E7%94%A8%E6%9D%A5%E7%A7%BB%E5%8A%A8%E6%96%87%E4%BB%B6%E3%80%82"><span class="nav-number">1.8.</span> <span class="nav-text">1.8 mv命令 用来移动文件。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-9-rm%E5%91%BD%E4%BB%A4-%E7%94%A8%E6%9D%A5%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6%E3%80%82"><span class="nav-number">1.9.</span> <span class="nav-text">1.9 rm命令 用来删除文件。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-10-rmdir%E5%91%BD%E4%BB%A4-%E7%94%A8%E6%9D%A5%E5%88%A0%E9%99%A4%E7%9B%AE%E5%BD%95%E3%80%82"><span class="nav-number">1.10.</span> <span class="nav-text">1.10 rmdir命令 用来删除目录。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-11-find%E5%91%BD%E4%BB%A4-%E7%94%A8%E6%9D%A5%E6%9F%A5%E8%AF%A2%E6%96%87%E4%BB%B6"><span class="nav-number">1.11.</span> <span class="nav-text">1.11 find命令  用来查询文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-12-vi-%E6%98%AFUNIX%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%92%8C%E7%B1%BBUNIX%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B8%AD%E6%9C%80%E9%80%9A%E7%94%A8%E7%9A%84%E5%85%A8%E5%B1%8F%E5%B9%95%E7%BA%AF%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8%E3%80%82Linux%E4%B8%AD%E7%9A%84vi%E7%BC%96%E8%BE%91%E5%99%A8%E5%8F%ABvim%EF%BC%8C%E5%AE%83%E6%98%AFvi%E7%9A%84%E5%A2%9E%E5%BC%BA%E7%89%88%EF%BC%88vi-Improved%EF%BC%89%EF%BC%8C%E4%B8%8Evi%E7%BC%96%E8%BE%91%E5%99%A8%E5%AE%8C%E5%85%A8%E5%85%BC%E5%AE%B9%EF%BC%8C%E8%80%8C%E4%B8%94%E5%AE%9E%E7%8E%B0%E4%BA%86%E5%BE%88%E5%A4%9A%E5%A2%9E%E5%BC%BA%E5%8A%9F%E8%83%BD%E3%80%82%E8%BF%9B%E5%85%A5vi%E7%9A%84%E5%91%BD%E4%BB%A4"><span class="nav-number">1.12.</span> <span class="nav-text">1.12 vi 是UNIX操作系统和类UNIX操作系统中最通用的全屏幕纯文本编辑器。Linux中的vi编辑器叫vim，它是vi的增强版（vi Improved），与vi编辑器完全兼容，而且实现了很多增强功能。进入vi的命令</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Mr.yuan"
+      src="/images/photo.jpg">
+  <p class="site-author-name" itemprop="name">Mr.yuan</p>
+  <div class="site-description" itemprop="description">心有所向，无问东西</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yuanyongliang1.github.io/2023/09/12/linuxOrder/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/photo.jpg">
+      <meta itemprop="name" content="Mr.yuan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永夜">
+      <meta itemprop="description" content="心有所向，无问东西">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="linuxOrder | 永夜">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          linuxOrder
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-09-12 10:25:56" itemprop="dateCreated datePublished" datetime="2023-09-12T10:25:56+08:00">2023-09-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-02-28 11:11:23" itemprop="dateModified" datetime="2024-02-28T11:11:23+08:00">2024-02-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="1．Linux管理文件和目录的命令"><a href="#1．Linux管理文件和目录的命令" class="headerlink" title="1．Linux管理文件和目录的命令"></a>1．Linux管理文件和目录的命令</h2><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>pwd</td>
+<td>显当前目录</td>
+</tr>
+<tr>
+<td>ls</td>
+<td>查看目录下的内容</td>
+</tr>
+<tr>
+<td>cd</td>
+<td>改变所在目录</td>
+</tr>
+<tr>
+<td>cat</td>
+<td>显示文件的内容</td>
+</tr>
+<tr>
+<td>grep</td>
+<td>在文件中查找某字符</td>
+</tr>
+<tr>
+<td>cp</td>
+<td>复制文件</td>
+</tr>
+<tr>
+<td>touch</td>
+<td>创建文件</td>
+</tr>
+<tr>
+<td>mv</td>
+<td>移动文件</td>
+</tr>
+<tr>
+<td>rm</td>
+<td>删除文件</td>
+</tr>
+<tr>
+<td>rmdir</td>
+<td>删除目录</td>
+</tr>
+<tr>
+<td>vi</td>
+<td>编辑文件</td>
+</tr>
+</tbody></table>
+<h3 id="1-1-pwd命令"><a href="#1-1-pwd命令" class="headerlink" title="1.1 pwd命令"></a>1.1 pwd命令</h3><p>该命令的英文解释为print working directory(打印工作目录)。输入pwd命令，Linux会输出当前目录。</p>
+<h3 id="1-2-cd命令-用来改变所在目录。"><a href="#1-2-cd命令-用来改变所在目录。" class="headerlink" title="1.2 cd命令 用来改变所在目录。"></a>1.2 cd命令 用来改变所在目录。</h3><p>cd &#x2F; 转到根目录中<br>        cd ~ 转到&#x2F;home&#x2F;user用户目录下<br>        cd &#x2F;usr 转到根目录下的usr目录中————-绝对路径<br>        cd test 转到当前目录下的test子目录中——-相对路径</p>
+<h3 id="1-3-ls命令-用来查看目录的内容。"><a href="#1-3-ls命令-用来查看目录的内容。" class="headerlink" title="1.3 ls命令 用来查看目录的内容。"></a>1.3 ls命令 用来查看目录的内容。</h3><p>选项 含义<br>        -a 列举目录中的全部文件，包括隐藏文件<br>        -l 列举目录中的细节，包括权限、所有者、组群、大小、创建日期、文件是否是链接等<br>        -f 列举的文件显示文件类型<br>        -r 逆向，从后向前地列举目录中内容<br>        -R 递归，该选项递归地列举当前目录下所有子目录内的内容<br>        -s 大小，按文件大小排序<br>        -h 以人类可读的方式显示文件的大小，如用K、M、G作单位</p>
+<p>ls -l examples.doc 列举文件examples.doc的所有信息</p>
+<h3 id="1-4-cat命令"><a href="#1-4-cat命令" class="headerlink" title="1.4 cat命令"></a>1.4 cat命令</h3><p>cat命令可以用来合并文件，也可以用来在屏幕上显示整个文件的内容。<br>        cat snow.txt 该命令显示文件snow.txt的内容，ctrl+D退出cat。</p>
+<h3 id="1-5-grep命令-最大功能是在一堆文件中查找一个特定的字符串。"><a href="#1-5-grep命令-最大功能是在一堆文件中查找一个特定的字符串。" class="headerlink" title="1.5 grep命令 最大功能是在一堆文件中查找一个特定的字符串。"></a>1.5 grep命令 最大功能是在一堆文件中查找一个特定的字符串。</h3><p>grep money test.txt<br>        以上命令在test.txt中查找money这个字符串，grep查找是区分大小写的。</p>
+<h3 id="1-6-touch命令"><a href="#1-6-touch命令" class="headerlink" title="1.6 touch命令"></a>1.6 touch命令</h3><p>touch命令用来创建新文件，他可以创建一个空白的文件，可以在其中添加文本和数据。<br>        touch newfile 该命令创建一个名为newfile的空白文件。</p>
+<h3 id="1-7-cp命令-用来拷贝文件，要复制文件，输入命令："><a href="#1-7-cp命令-用来拷贝文件，要复制文件，输入命令：" class="headerlink" title="1.7 cp命令 用来拷贝文件，要复制文件，输入命令："></a>1.7 cp命令 用来拷贝文件，要复制文件，输入命令：</h3><p>cp<br>        cp t.txt Document&#x2F;t 该命令将把文件t.txt复制到Document目录下，并命名为t。<br>        选项 含义<br>        -I 互动：如果文件将覆盖目标中的文件，他会提示确认<br>        -r 递归：这个选项会复制整个目录树、子目录以及其他<br>        -v 详细：显示文件的复制进度</p>
+<h3 id="1-8-mv命令-用来移动文件。"><a href="#1-8-mv命令-用来移动文件。" class="headerlink" title="1.8 mv命令 用来移动文件。"></a>1.8 mv命令 用来移动文件。</h3><p>选项 说明<br>        -I 互动：如果选择的文件会覆盖目标中的文件，他会提示确认<br>        -f 强制：它会超越互动模式，不提示地移动文件，属于很危险的选项<br>        -v 详细：显示文件的移动进度<br>        mv t.txt Document 把文件t.txt 移动到目录Document中。</p>
+<h3 id="1-9-rm命令-用来删除文件。"><a href="#1-9-rm命令-用来删除文件。" class="headerlink" title="1.9 rm命令 用来删除文件。"></a>1.9 rm命令 用来删除文件。</h3><p>选项 说明<br>        -I 互动：提示确认删除<br>        -f 强制：代替互动模式，不提示确认删除<br>        -v 详细：显示文件的删除进度<br>        -r 递归：将删除某个目录以及其中所有的文件和子目录<br>        rm t.txt 该命令删除文件t.txt</p>
+<h3 id="1-10-rmdir命令-用来删除目录。"><a href="#1-10-rmdir命令-用来删除目录。" class="headerlink" title="1.10 rmdir命令 用来删除目录。"></a>1.10 rmdir命令 用来删除目录。</h3><h3 id="1-11-find命令-用来查询文件"><a href="#1-11-find命令-用来查询文件" class="headerlink" title="1.11 find命令  用来查询文件"></a>1.11 find命令  用来查询文件</h3><p><strong>按照文件名搜索</strong></p>
+<p>选项：<br>        -name    按照文件名搜索<br>        -iname   按照文件名搜索，不区分文件名大小写<br>        -inum    按照inode号搜索</p>
+<p>如要在<code>/home/linuxize</code>目录下搜索一个名为<code>document.pdf</code>的文件，你可以使用下面的命令。</p>
+<blockquote>
+<p>find &#x2F;home&#x2F;linuxize -type f -name document.pdf</p>
+</blockquote>
+<p><strong>按照文件类型搜索</strong></p>
+<p>选项：<br>        -type d  查找目录<br>        -type f  查找普通文件<br>        -type l  查找软链接文件</p>
+<p>例如，要在<code>/var/log/nginx</code>目录下找到所有以<code>.log.gz</code>结尾的文件，你可以使用一下命令</p>
+<blockquote>
+<p>​	find &#x2F;var&#x2F;log&#x2F;nginx -type f -name ‘*.log.gz’</p>
+</blockquote>
+<p><strong>使用案例</strong></p>
+<blockquote>
+<p>find -name java*                     # 在当前目录下查找以java开始的文件<br>        find -name java* fprint file         # 在当前目录下查找以java开始的文件，并把结果输出到file中<br>        find -name ap* -o -name may*         # 查找以ap或may开头的文件</p>
+</blockquote>
+<h3 id="1-12-vi-是UNIX操作系统和类UNIX操作系统中最通用的全屏幕纯文本编辑器。Linux中的vi编辑器叫vim，它是vi的增强版（vi-Improved），与vi编辑器完全兼容，而且实现了很多增强功能。进入vi的命令"><a href="#1-12-vi-是UNIX操作系统和类UNIX操作系统中最通用的全屏幕纯文本编辑器。Linux中的vi编辑器叫vim，它是vi的增强版（vi-Improved），与vi编辑器完全兼容，而且实现了很多增强功能。进入vi的命令" class="headerlink" title="1.12 vi 是UNIX操作系统和类UNIX操作系统中最通用的全屏幕纯文本编辑器。Linux中的vi编辑器叫vim，它是vi的增强版（vi Improved），与vi编辑器完全兼容，而且实现了很多增强功能。进入vi的命令"></a>1.12 vi 是UNIX操作系统和类UNIX操作系统中最通用的全屏幕纯文本编辑器。Linux中的vi编辑器叫vim，它是vi的增强版（vi Improved），与vi编辑器完全兼容，而且实现了很多增强功能。进入vi的命令</h3><p>vi filename :打开或新建文件,并将光标置于第一行首<br>        vi n filename ：打开文件,并将光标置于第n行首<br>        vi filename ：打开文件,并将光标置于一行首<br>        vi &#x2F;pattern filename：打开文件,并将光标置于第一个与pattern匹配的串处<br>        vi -r filename ：在上次正用vi编辑时发生系统崩溃,恢复filename<br>        vi filename….filename ：打开多个文件,依次进行编辑</p>
+<p>屏幕翻滚类命令<br>        Ctrl u：向文件首翻半屏<br>        Ctrl d：向文件尾翻半屏<br>        Ctrl f：向文件尾翻一屏<br>        Ctrl＋b；向文件首翻一屏<br>        nz：将第n行滚至屏幕顶部,不指定n时将当前行滚至屏幕顶部.<br>        插入文本类命令<br>        i ：在光标前<br>        I ：在当前行首<br>        a：光标后<br>        A：在当前行尾<br>        o：在当前行之下新开一行<br>        O：在当前行之上新开一行<br>        r：替换当前字符<br>        R：替换当前字符及其后的字符,直至按ESC键<br>        s：从当前光标位置处开始,以输入的文本替代指定数目的字符</p>
+<p>保存命令<br>        按ESC键 跳到命令模式，然后：<br>        :w 保存文件但不退出vi<br>        :w file 将修改另外保存到file中，不退出vi<br>        :w! 强制保存，不推出vi<br>        :wq 保存文件并退出vi<br>        :wq! 强制保存文件，并退出vi<br>        :q 不保存文件，退出vi<br>        :q! 不保存文件，强制退出vi<br>        :e! 放弃所有修改，从上次保存文件开始再编辑</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" rel="tag"># Linux常用命令</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/09/16/instruct/" rel="next" title="指令信息">
+                  指令信息 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Mr.yuan</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">15k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">13 分钟</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        本站总访客数：<span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        本站总访问量：<span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

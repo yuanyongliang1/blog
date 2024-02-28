@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yuanyongliang1.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.19.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="出现背景 1、线程不安全的HashMap 非原子操作：HashMap的操作不是原子性的，例如put()方法涉及到了多个步骤，包括计算hash值，查找或插入元素等，如果多个线程同时执行这些操作，就有可能导致数据不一致的情况。 容量扩容，HashMap在扩容时，需要重新计算元素的hash值并分配存储位置，这个过程涉及到对原数组进行复制和重新插入元素的操作。如果在扩容期间有其他线程对HashMap进行并">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一文读懂 ConcurrentHashMap 原理">
+<meta property="og:url" content="https://yuanyongliang1.github.io/2024/02/18/ConcurrentHashMap/index.html">
+<meta property="og:site_name" content="永夜">
+<meta property="og:description" content="出现背景 1、线程不安全的HashMap 非原子操作：HashMap的操作不是原子性的，例如put()方法涉及到了多个步骤，包括计算hash值，查找或插入元素等，如果多个线程同时执行这些操作，就有可能导致数据不一致的情况。 容量扩容，HashMap在扩容时，需要重新计算元素的hash值并分配存储位置，这个过程涉及到对原数组进行复制和重新插入元素的操作。如果在扩容期间有其他线程对HashMap进行并">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-02-18T04:54:28.000Z">
+<meta property="article:modified_time" content="2024-02-23T02:12:15.485Z">
+<meta property="article:author" content="Mr.yuan">
+<meta property="article:tag" content="ConcurrentHashMap">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://yuanyongliang1.github.io/2024/02/18/ConcurrentHashMap/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://yuanyongliang1.github.io/2024/02/18/ConcurrentHashMap/","path":"2024/02/18/ConcurrentHashMap/","title":"一文读懂 ConcurrentHashMap 原理"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>一文读懂 ConcurrentHashMap 原理 | 永夜</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">永夜</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">天行健，君子以自强不息</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-id-card fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-folder-open fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-schedule"><a href="/schedule/" rel="section"><i class="fa fa-calculator fa-fw"></i>日程表</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8%E7%9A%84HashMap"><span class="nav-number">1.</span> <span class="nav-text">1、线程不安全的HashMap</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81%E6%95%88%E7%8E%87%E4%BD%8E%E4%B8%8B%E7%9A%84HashTable"><span class="nav-number">2.</span> <span class="nav-text">2、效率低下的HashTable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ConcurrentHashMap%E7%9A%84%E9%94%81%E5%88%86%E6%AE%B5%E6%8A%80%E6%9C%AF"><span class="nav-number">3.</span> <span class="nav-text">ConcurrentHashMap的锁分段技术</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Segment"><span class="nav-number">3.1.</span> <span class="nav-text">Segment</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%88%91%E4%BB%AC%E5%86%8D%E6%9D%A5%E5%85%B7%E4%BD%93%E4%BA%86%E8%A7%A3%E4%B8%80%E4%B8%8BSegment%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">3.2.</span> <span class="nav-text">我们再来具体了解一下Segment的数据结构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#HashEntry"><span class="nav-number">3.3.</span> <span class="nav-text">HashEntry</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ConcurrentHashMap-JDK1-8%E4%B8%8EJDK1-7%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">4.</span> <span class="nav-text">ConcurrentHashMap JDK1.8与JDK1.7的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ConcurrentHashMap%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">5.</span> <span class="nav-text">ConcurrentHashMap的初始化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ConcurrentHashMap%E7%9A%84get%E6%93%8D%E4%BD%9C"><span class="nav-number">6.</span> <span class="nav-text">ConcurrentHashMap的get操作</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#volatile"><span class="nav-number">6.1.</span> <span class="nav-text">volatile</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#unsafe"><span class="nav-number">6.2.</span> <span class="nav-text">unsafe</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Mr.yuan"
+      src="/images/photo.jpg">
+  <p class="site-author-name" itemprop="name">Mr.yuan</p>
+  <div class="site-description" itemprop="description">心有所向，无问东西</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://yuanyongliang1.github.io/2024/02/18/ConcurrentHashMap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/photo.jpg">
+      <meta itemprop="name" content="Mr.yuan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永夜">
+      <meta itemprop="description" content="心有所向，无问东西">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="一文读懂 ConcurrentHashMap 原理 | 永夜">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          一文读懂 ConcurrentHashMap 原理
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-02-18 12:54:28" itemprop="dateCreated datePublished" datetime="2024-02-18T12:54:28+08:00">2024-02-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-02-23 10:12:15" itemprop="dateModified" datetime="2024-02-23T10:12:15+08:00">2024-02-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/java%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java基础</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><strong>出现背景</strong></p>
+<h4 id="1、线程不安全的HashMap"><a href="#1、线程不安全的HashMap" class="headerlink" title="1、线程不安全的HashMap"></a>1、线程不安全的HashMap</h4><ul>
+<li>非原子操作：<code>HashMap</code>的操作不是原子性的，例如put()方法涉及到了多个步骤，包括计算hash值，查找或插入元素等，如果多个线程同时执行这些操作，就有可能导致数据不一致的情况。</li>
+<li>容量扩容，<code>HashMap</code>在扩容时，需要重新计算元素的hash值并分配存储位置，这个过程涉及到对原数组进行复制和重新插入元素的操作。如果在扩容期间有其他线程对<code>HashMap</code>进行并发修改，就可能导致数据丢失或出现异常</li>
+</ul>
+<h4 id="2、效率低下的HashTable"><a href="#2、效率低下的HashTable" class="headerlink" title="2、效率低下的HashTable"></a>2、效率低下的HashTable</h4><p><code>HashTable</code>容器使用<code>synchronized</code>来保证线程安全，但在线程竞争激烈的情况下<code>HashTable</code>的效率非常低，因为当一个线程正在访问<code>HashTable</code>的同步方法时，这时，另外一个线程也来访问<code>HashTable</code>的同步方法， 可能会进入阻塞和轮询状态。如线程A使用put进行添加元素的时候，线程B不但不能使用put方法添加元素，而且不能使用get方法获取元素，所以竞争越激烈效率越低，也就是说对于<code>HashTable</code>而言，<code>synchronized</code>是针对Hash整张表的，即每次锁住整张表让线程独占，相当于所有线程进行读写的时候都去竞争一把锁。</p>
+<h4 id="ConcurrentHashMap的锁分段技术"><a href="#ConcurrentHashMap的锁分段技术" class="headerlink" title="ConcurrentHashMap的锁分段技术"></a>ConcurrentHashMap的锁分段技术</h4><p>锁分段技术就是将数据分成一段一段的储存，然后给每一段数据分配一把锁，当一个线程占用锁访问一个段数据时，其他的段数据也是可以被其他线程访问的，另外，<code>ConcurrentHsahMap</code>是可以做到读取数据不加锁</p>
+<p><code>ConcurrentHashMap</code>是由<code>Segment</code>数据结构和<code>HashEntry</code>数据结构组成，<code>Segment</code>是一种可重入锁<code>ReentrantLock</code>，在<code>ConcurrentHashMap</code>中扮演锁的角色，<code>HashEntry</code>则用于存储键值对数据，一个<code>ConcurrentHashMap</code>中包含一个<code>Segment</code>数组，<code>Segment</code>结构和<code>HashMap</code>类似，是一种数组和链表结构，一个<code>Segment</code>里包含一个<code>HashEntry</code>数组，每个<code>HashEntry</code>是一个链表结构的元素，每个<code>Segment</code>守护着一个<code>HashEntry</code>数组里的元素，当对<code>HashEntry</code>数组中的数据进行修改时，必须先获得它对应的<code>Segment</code>锁</p>
+<h5 id="Segment"><a href="#Segment" class="headerlink" title="Segment"></a>Segment</h5><h5 id="我们再来具体了解一下Segment的数据结构"><a href="#我们再来具体了解一下Segment的数据结构" class="headerlink" title="我们再来具体了解一下Segment的数据结构"></a>我们再来具体了解一下Segment的数据结构</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">Segment</span>&lt;K,V&gt; <span class="keyword">extends</span> <span class="title class_">ReentrantLock</span> <span class="keyword">implements</span> <span class="title class_">Serializable</span> &#123; </span><br><span class="line">    <span class="keyword">transient</span> <span class="keyword">volatile</span> <span class="type">int</span> count; </span><br><span class="line">    <span class="keyword">transient</span> <span class="type">int</span> modCount; </span><br><span class="line">    <span class="keyword">transient</span> <span class="type">int</span> threshold; </span><br><span class="line">    <span class="keyword">transient</span> <span class="keyword">volatile</span> HashEntry&lt;K,V&gt;[] table; </span><br><span class="line">    <span class="keyword">final</span> <span class="type">float</span> loadFactor; </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>以下时是Segment里面成员变量的意义：</p>
+<ul>
+<li>count：Segment中元素的数量</li>
+<li>modCount：对table的大小造成影响的操作的数量（比如put或者remove操作）</li>
+<li>threshold：阈值，Segment里面元素的数量超过这个值依旧就会对Segment进行扩容</li>
+<li>table：链表数组，数组中的每一个元素代表了一个链表的头部</li>
+<li>loadFactor：负载因子，用于确定threshold</li>
+</ul>
+<p>count用来统计该段数据的个数，它是volatile变量，它用来协调修改和读取操作，以保证读取操作能够读取到几乎最新修改的值，协调方法是这样的，每次修改操作做了结构上的变化，如增加&#x2F;删除节点（修改节点的值不算结构上的变化），都要写count值，每次读取操作开始都要读取count的值。这利用了Java5中对volatile语义的增强，对同一个volatile变量的写和读存在happens-begore关系。modCount统计段数据改变的次数，主要为了检测对多个段进行遍历过程中某个段是否发生改变。threashold用来表示需要进行rehash的界限值。 table数组存储段中节点，每个数组是个hash链，用HashEntry表示。table也是volatile，这使得能够读取到最新的table值而不需要同步。loadFactor表示负载因子。</p>
+<h5 id="HashEntry"><a href="#HashEntry" class="headerlink" title="HashEntry"></a><strong>HashEntry</strong></h5><p>Segment中的元素是以HashEntry的形式存放在链表数组中的，看一下HashEntry的结构：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">HashEntry</span>&lt;K,V&gt; &#123; </span><br><span class="line">    <span class="keyword">final</span> K key; </span><br><span class="line">    <span class="keyword">final</span> <span class="type">int</span> hash; </span><br><span class="line">    <span class="keyword">volatile</span> V value; </span><br><span class="line">    <span class="keyword">final</span> HashEntry&lt;K,V&gt; next; </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>可以看到<code>HashEntry</code>的一个特点，除了value外，其他的几个变量都是final修饰的，这意味着不能从hash链表的尾部和中部进行添加或删除节点，因为这需要修改next引用值，所有的节点的修改只能从头部开始。对于put操作，可以一律添加到hash链表的头部。但是对于remove操作，可能需要从中间删除一个节点，这时候就需要把将要删除的节点的前面的节点都复制一遍，最后一个节点指向要删除的节点的下一个节点。为了确保读操作能看到最新的值，将value设置为<code>volatile</code>，这避免了加锁。</p>
+<h4 id="ConcurrentHashMap-JDK1-8与JDK1-7的区别"><a href="#ConcurrentHashMap-JDK1-8与JDK1-7的区别" class="headerlink" title="ConcurrentHashMap JDK1.8与JDK1.7的区别"></a>ConcurrentHashMap JDK1.8与JDK1.7的区别</h4><p>JDK1.8 中 <code>ConcurrentHashMap</code> 类取消了 <code>Segment </code>分段锁，采用 <code>CAS </code>+ <code>synchronized </code>来保证并发安全，数据结构跟 jdk1.8 中 <code>HashMap </code>结构类似，都是<strong>数组 + 链表(当链表长度大于8时，链表结构转为红黑二叉树</strong>)结构。<code>ConcurrentHashMap</code> 中 <code>synchronized</code> 只锁定当前链表或红黑二叉树的首节点，只要节点 hash 不冲突，就不会产生并发，相比 JDK1.7 的 <code>ConcurrentHashMap</code> 效率又提升了 N 倍！</p>
+<h4 id="ConcurrentHashMap的初始化"><a href="#ConcurrentHashMap的初始化" class="headerlink" title="ConcurrentHashMap的初始化"></a>ConcurrentHashMap的初始化</h4><p>我们结合一下源码来分析一下ConcurrentHashMap的实现，先看初始化方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">ConcurrentHashMap</span><span class="params">(<span class="type">int</span> initialCapacity, </span></span><br><span class="line"><span class="params">                         <span class="type">float</span> loadFactor, <span class="type">int</span> concurrencyLevel)</span> &#123; </span><br><span class="line">    <span class="keyword">if</span> (!(loadFactor &gt; <span class="number">0</span>) || initialCapacity &lt; <span class="number">0</span> || concurrencyLevel &lt;= <span class="number">0</span>) </span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(); </span><br><span class="line">    <span class="keyword">if</span> (concurrencyLevel &gt; MAX_SEGMENTS) </span><br><span class="line">        concurrencyLevel = MAX_SEGMENTS; </span><br><span class="line">    <span class="comment">// Find power-of-two sizes best matching arguments </span></span><br><span class="line">    <span class="type">int</span> <span class="variable">sshift</span> <span class="operator">=</span> <span class="number">0</span>; </span><br><span class="line">    <span class="type">int</span> <span class="variable">ssize</span> <span class="operator">=</span> <span class="number">1</span>; </span><br><span class="line">    <span class="keyword">while</span> (ssize &lt; concurrencyLevel) &#123; </span><br><span class="line">        ++sshift; </span><br><span class="line">        ssize &lt;&lt;= <span class="number">1</span>; </span><br><span class="line">    &#125; </span><br><span class="line">    segmentShift = <span class="number">32</span> - sshift; </span><br><span class="line">    segmentMask = ssize - <span class="number">1</span>; </span><br><span class="line">    <span class="built_in">this</span>.segments = Segment.newArray(ssize); </span><br><span class="line">    <span class="keyword">if</span> (initialCapacity &gt; MAXIMUM_CAPACITY) </span><br><span class="line">        initialCapacity = MAXIMUM_CAPACITY; </span><br><span class="line">    <span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> initialCapacity / ssize; </span><br><span class="line">    <span class="keyword">if</span> (c * ssize &lt; initialCapacity) </span><br><span class="line">        ++c; </span><br><span class="line">    <span class="type">int</span> <span class="variable">cap</span> <span class="operator">=</span> <span class="number">1</span>; </span><br><span class="line">    <span class="keyword">while</span> (cap &lt; c) </span><br><span class="line">        cap &lt;&lt;= <span class="number">1</span>; </span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="built_in">this</span>.segments.length; ++i) </span><br><span class="line">        <span class="built_in">this</span>.segments[i] = <span class="keyword">new</span> <span class="title class_">Segment</span>&lt;K,V&gt;(cap, loadFactor); </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>CurrentHashMap</code>的初始化一共有三个参数，一个<code>initialCapacity</code>，表示初始的容量，一个<code>loadFactor</code>，表示负载参数，最后一个是<code>concurrentLevel</code>，代表<code>ConcurrentHashMap</code>内部<code>Segment</code>的数量，<code>ConcurrentLevel</code>一经指定，不可该变，后续如果<code>ConcurrentHashMap</code>的元素数量增加导致<code>ConcurrentHashMap</code>需要扩容，<code>ConcurrentHashMap</code>不会增加<code>Segment</code>的数量，只会增加<code>Segment</code>中链表数组的容量，这样扩容的好处是不需要对<code>ConcurrentHashMap</code>中所有的元素做rehash，只需要对<code>Segment</code>中的元素做一次rehash就可以了。</p>
+<p>默认初始表的容量，必须是2的幂（至少为1），最大为16.</p>
+<h4 id="ConcurrentHashMap的get操作"><a href="#ConcurrentHashMap的get操作" class="headerlink" title="ConcurrentHashMap的get操作"></a>ConcurrentHashMap的get操作</h4><p>在java8中，<code>concurrentHashMap</code>的get操作是不需要加锁的。</p>
+<p><code>concurrentHashMap</code>的设计目标是支持高并发操作，所以在实现中，尽可能地减少锁的使用。在java8中，为了提高并发性能，<code>concurrentHashMap</code>使用node数组和链表&#x2F;红黑树 ，而且get操作完全无锁。</p>
+<p>get方法主要是通过<code>volatile</code>关键字和<code>Unsafe</code>类来保证的，在<code>ConcurrentHashMap</code>中，Node数组和Node节点的value字段都是用<code>volatile</code>关键字修饰的，这可以保证线程间的可见性， 也就是说当一个线程修改了数据，其他线程可以立即看到修改后的值，另外，Unsafe类提供了一种低级别的，直接操作内存的方式，可以用来实现无锁的并发操作。</p>
+<h5 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h5><p><code>volatile</code>是Java中的一个关键字，它用于修饰变量，当一个变量被<code>volatile</code>修饰后，它保证了以下两个主要特征：</p>
+<ul>
+<li>可见性：当一个线程修改了一个<code>volatile</code>变量的值，其他线程可以立即看到这个修改，这是因为volatile变量的读写都会直接操作主内存，而不是CPU缓存，从而保证了在多线程环境下的数据一致性</li>
+<li>有序性：<code>volatile</code>关键字禁止指令重排序优化。也就是说，对<code>volatile</code>变量的读写操作，都会按照代码执行顺序进行。</li>
+</ul>
+<h5 id="unsafe"><a href="#unsafe" class="headerlink" title="unsafe"></a>unsafe</h5><p>在Java中，<code>Unsafe</code>是一个类，全名为<code>sun.misc.Unsafe</code>。这个类提供了一些可以直接操作内存和线程的底层方法，因此使用它可以进行一些非常底层的操作，比如直接访问和修改对象的字段，甚至是没有被<code>public</code>修饰的字段。</p>
+<p>以下是一些<code>Unsafe</code>类提供的方法的例子：</p>
+<ul>
+<li><code>allocateMemory</code>、<code>freeMemory</code>和<code>reallocateMemory</code>：可以直接分配、释放和重新分配内存，就像C语言的<code>malloc</code>、<code>free</code>和<code>realloc</code>函数一样。</li>
+<li><code>putInt</code>、<code>getInt</code>等：可以直接读写内存。</li>
+<li><code>compareAndSwapInt</code>、<code>compareAndSwapLong</code>等：可以进行原子操作。</li>
+<li><code>park</code>和<code>unpark</code>：可以挂起和恢复线程。</li>
+</ul>
+<p>虽然<code>Unsafe</code>类提供了强大的功能，但是它的使用是有风险的，因为不正确的使用可能会导致程序崩溃，或者产生难以调试的问题。因此，<code>Unsafe</code>类并不是公开的API，它主要是为Java的核心类库提供服务的。在应用程序中，我们应该尽量避免使用<code>Unsafe</code>类，而是使用更高级的、更安全的API。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ConcurrentHashMap/" rel="tag"># ConcurrentHashMap</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/09/16/encryptionTest/" rel="prev" title="日记">
+                  <i class="fa fa-angle-left"></i> 日记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/02/20/threeHandshake/" rel="next" title="threeHandshake">
+                  threeHandshake <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Mr.yuan</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">15k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">13 分钟</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        本站总访客数：<span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        本站总访问量：<span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

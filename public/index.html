@@ -88,7 +88,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-schedule"><a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-id-card fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-folder-open fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-schedule"><a href="/schedule/" rel="section"><i class="fa fa-calculator fa-fw"></i>日程表</a></li>
   </ul>
 </nav>
 
@@ -127,9 +127,19 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">日志</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>
@@ -154,7 +164,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://yuanyongliang1.github.io/2024/01/19/secon/">
+    <link itemprop="mainEntityOfPage" href="https://yuanyongliang1.github.io/2024/02/23/thread/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/photo.jpg">
@@ -172,7 +182,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/01/19/secon/" class="post-title-link" itemprop="url">secon</a>
+          <a href="/2024/02/23/thread/" class="post-title-link" itemprop="url">threadLifecycle</a>
         </h2>
 
         <div class="post-meta-container">
@@ -182,8 +192,18 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2024-01-19 11:36:15" itemprop="dateCreated datePublished" datetime="2024-01-19T11:36:15+08:00">2024-01-19</time>
+      <time title="创建时间：2024-02-23 14:12:25 / 修改时间：19:02:06" itemprop="dateCreated datePublished" datetime="2024-02-23T14:12:25+08:00">2024-02-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BA%BF%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">线程</span></a>
+        </span>
     </span>
 
   
@@ -193,7 +213,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>0</span>
+      <span>1.6k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -211,7 +231,80 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          
+          <h4 id="进程与线程的区别"><a href="#进程与线程的区别" class="headerlink" title="进程与线程的区别"></a>进程与线程的区别</h4><p>1、本质不同</p>
+<p>进程是资源的分配和调度的一个独立单元，而线程是CPU调度的基本单元。</p>
+<p>2、数量不同</p>
+<p>同一个进程中可以包括多个线程，并且线程共享整个进程的资源（寄存器、堆栈、上下文），一个进行至少包括一个线程。</p>
+<p>3、过程不同</p>
+<p>进程的创建调用fork或者vfork，而线程的创建调用pthread_create，进程结束后它拥有的所有线程都将销毁，而线程的结束不会影响同个进程中的其他线程的结束。</p>
+<p>4、属性不同</p>
+<p>线程有自己的私有属性TCB，线程id，寄存器、硬件上下文，而进程也有自己的私有属性进程控制块PCB，这些私有属性是不被共享的，用来标示一个进程或一个线程的标志。</p>
+<p><strong>进程：</strong>是资源分配的最小单位，一个进程可以有多个线程，多个线程共享进程的堆和方法区资源，不共享栈、程序计数器</p>
+<p><strong>线程：</strong>是任务调度和执行的最小单位，线程并行执行存在资源竞争和上下文切换的问题</p>
+<p><strong>协程：</strong>是一种比线程更加轻量级的存在，正如一个进程可以拥有多个线程一样，一个线程可以拥有多个协程。</p>
+<h4 id="进程间通信方式IPC"><a href="#进程间通信方式IPC" class="headerlink" title="进程间通信方式IPC"></a>进程间通信方式IPC</h4><p><strong>管道pipe：</strong>亲缘关系使用匿名管道，非亲缘关系使用命名管道，管道遵循FIFO，半双工，数据只能单向通信；</p>
+<p><strong>信号：</strong>信号是一种比较复杂的通信方式，用户调用kill命令将信号发送给其他进程。</p>
+<p><strong>消息队列：</strong>消息队列克服了信号传递信息少，管道只能承载无格式字节流以及缓冲区大小受限等特点。</p>
+<p><strong>共享内存(share memory)：</strong></p>
+<ul>
+<li>使得多个进程可以可以直接读写同一块内存空间，是最快的可用IPC形式。是针对其他通信机制运行效率较低而设计的。</li>
+<li>由于多个进程共享一段内存，因此需要依靠某种同步机制（如信号量）来达到进程间的同步及互斥。</li>
+</ul>
+<p><strong>信号量(Semaphores) ：</strong>信号量是⼀个计数器，⽤于多进程对共享数据的访问，这种通信⽅式主要⽤于解决与同步相关的问题并避免竞争条件。</p>
+<p><strong>套接字(Sockets) :</strong> 简单的说就是通信的两⽅的⼀种约定，⽤套接字中的相关函数来完成通信过程。</p>
+<h4 id="并行与串行的区别"><a href="#并行与串行的区别" class="headerlink" title="并行与串行的区别"></a>并行与串行的区别</h4><p>串行就是在主线程上按顺序执行逻辑代码</p>
+<p>并行就是多个cpu同时工作来完成多个逻辑</p>
+<h4 id="java实现多线程的三种的方式"><a href="#java实现多线程的三种的方式" class="headerlink" title="java实现多线程的三种的方式"></a>java实现多线程的三种的方式</h4><p>继承Thread类、实现Runnable接口、使用ExecutorService、Callable、Future实现有返回结果的多线程。其中前两种方式线程执行完后都没有返回值，只有最后一种是带返回值的。</p>
+<h4 id="线程常用API"><a href="#线程常用API" class="headerlink" title="线程常用API"></a>线程常用API</h4><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>名称</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>start()</td>
+<td>启动线程</td>
+</tr>
+<tr>
+<td>currentThread()</td>
+<td>获取当前线程对象</td>
+</tr>
+<tr>
+<td>getId()</td>
+<td>获取当前线程id</td>
+</tr>
+<tr>
+<td>getName()</td>
+<td>获取当前线程名称</td>
+</tr>
+<tr>
+<td>sleep()</td>
+<td>休眠线程</td>
+</tr>
+<tr>
+<td>stop()</td>
+<td>停止线程 –不安全 –不推荐使用</td>
+</tr>
+<tr>
+<td>setDaemon()</td>
+<td>改变线程状态:true-守护线程:flase-非守护线程</td>
+</tr>
+<tr>
+<td>join()</td>
+<td>线程执行优先级</td>
+</tr>
+</tbody></table>
+<h4 id="线程的生命周期"><a href="#线程的生命周期" class="headerlink" title="线程的生命周期"></a>线程的生命周期</h4><p>当线程被创建并启动以后，它既不是一启动就进入了执行状态，也不是一直处于执行状态。在线程的生命周期中，它要经过 <strong>新建（New）、就绪（Runnable）、运行（Running）、阻塞（Blocked）和死亡（Dead）5种状态</strong>。尤其是当线程启动以后，它不可能一直”霸占”着CPU独自运行，所以CPU需要在多条线程之间切换，于是 线程状态也会多次在运行、阻塞之间切换。</p>
+<p>1.当程序使用new关键字创建了一个线程之后，该线程就处于 <strong>新建状态</strong></p>
+<p>2.当线程对象调用了start()方法之后，该线程处于 <strong>就绪状态</strong>。</p>
+<p>3.当CPU开始调度处于 <strong>就绪状态</strong> 的线程时，此时线程获得了CPU时间片才得以真正开始执行run()方法的线程执行体，则该线程处于 <strong>运行状态</strong>。</p>
+<p>4.处于运行状态的线程在某些情况下，让出CPU并暂时停止自己的运行，进入 <strong>阻塞状态</strong>。</p>
+<p>5.线程会以下三种方式结束就会进入<strong>死亡状态</strong>	</p>
+<p>​	run()或call()方法执行完成，线程正常结束；</p>
+<p>​	线程抛出一个未捕获的Exception或Error；</p>
+<p>​	直接调用该线程stop()方法来结束该线程,—该方法容易导致死锁，通常不推荐使用；</p>
+
       
     </div>
 
@@ -237,7 +330,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://yuanyongliang1.github.io/2024/01/19/first/">
+    <link itemprop="mainEntityOfPage" href="https://yuanyongliang1.github.io/2024/02/21/redisPersistence/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/photo.jpg">
@@ -255,7 +348,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/01/19/first/" class="post-title-link" itemprop="url">first</a>
+          <a href="/2024/02/21/redisPersistence/" class="post-title-link" itemprop="url">redisPersistence</a>
         </h2>
 
         <div class="post-meta-container">
@@ -266,97 +359,23 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2024-01-19 11:31:38" itemprop="dateCreated datePublished" datetime="2024-01-19T11:31:38+08:00">2024-01-19</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>0</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://yuanyongliang1.github.io/2024/01/18/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/photo.jpg">
-      <meta itemprop="name" content="Mr.yuan">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="永夜">
-      <meta itemprop="description" content="心有所向，无问东西">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 永夜">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/01/18/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2024-01-18 17:08:44" itemprop="dateCreated datePublished" datetime="2024-01-18T17:08:44+08:00">2024-01-18</time>
+      <time title="创建时间：2024-02-21 15:21:32" itemprop="dateCreated datePublished" datetime="2024-02-21T15:21:32+08:00">2024-02-21</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：1985-10-26 16:15:00" itemprop="dateModified" datetime="1985-10-26T16:15:00+08:00">1985-10-26</time>
+      <time title="修改时间：2024-02-23 10:12:34" itemprop="dateModified" datetime="2024-02-23T10:12:34+08:00">2024-02-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/redis/" itemprop="url" rel="index"><span itemprop="name">redis</span></a>
+        </span>
     </span>
 
   
@@ -366,7 +385,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>367</span>
+      <span>1.6k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -384,19 +403,905 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+          <h4 id="redis持久化"><a href="#redis持久化" class="headerlink" title="redis持久化"></a>redis持久化</h4><p>redis持久化分为RDB和AOF:</p>
+<p>​	RDB：RDB持久化就是在指定时间间隔内将内存中的数据集快照写入磁盘，也就是<code>snapshot</code>，它恢复时是直接将快照文件直接读到内存里。</p>
+<p>RDB触发的方式有几种：两种，分别是手动触发和自动触发</p>
+<table>
+<thead>
+<tr>
+<th>触发方式</th>
+<th>实现方式</th>
+<th>特性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>手动触发</td>
+<td>save命令</td>
+<td>这个指令会直接阻塞当前redis服务器，直到RDB完成了为止</td>
+</tr>
+<tr>
+<td></td>
+<td>bgsave命令</td>
+<td>主进程fork一个子进程，由子进程完成持久化操作，<br />而主进程继续处理客户端的读写请求，<br />如果需要手动实现持久化，推荐使用这这种方式</td>
+</tr>
+<tr>
+<td>自动触发</td>
+<td>配置redis.conf的save参数</td>
+<td>save 20 3 代表的是在20s内写入3次就进行持久化</td>
+</tr>
+</tbody></table>
+<p><strong>bgsave的工作流程：</strong></p>
+<ul>
+<li>主进程fork出一个子进程，这时候主进程会被阻塞</li>
+<li>子进程创建完成后，<code>redis</code>客户端会输出 <code>Background saving started</code>,这就意味着子进程开始进行持久化操作了	</li>
+<li>子进程持久化完成后会生成一个rdb文件，将本次的rdb文件通过原子替换的方式将上一次备份的rdb文件覆盖</li>
+<li>子进程发送信号通知父进程本次任务完成</li>
+</ul>
+<p><strong>RDB常见的配置参数</strong></p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>dbfilename</td>
+<td>指定rdb的文件名</td>
+</tr>
+<tr>
+<td>dir</td>
+<td>指定rdb文件的持久化位置，默认取redis服务端的位置</td>
+</tr>
+<tr>
+<td>rdbcompression</td>
+<td>开启后redis默认使用LZF算法压缩rdb文件，这种方式会消耗CPU，但是压缩后的大小远远小于内存</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>RDB的优点和缺点：</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>优点</td>
+<td>RDB是一个紧凑的单一文件，很方便传送到另一个远端数据中心，非常适合用于灾难回复<br />在恢复较大的数据集时，RDb方式会更快一些</td>
+</tr>
+<tr>
+<td>缺点</td>
+<td>RDB没办法做到实时持久化，bgsave每次fork子进程都会阻塞，频繁执行成本较高<br />在一定间隔时间做备份，如果redis意外down掉，就会丢失最后一次快照之后的所有修改</td>
+</tr>
+</tbody></table>
+<p><strong>AOF：</strong>默认情况下，redis没有开启AOF，开启配置需要在配置文件中将<code>appendonly</code> 改为 yes，AOF会以日志的形式来记录每个写操作，将Redis执行过的所有指令记录下来，只需追加文件不许修改文件，<code>redis</code>启动时会读取该文件重新构建数据。</p>
+<p><strong>AOF的触发类型：</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th>参数说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">appendfsync always</td>
+<td>同步持久化，每次放生数据变化就会立马写入磁盘，新能比较差但数据完整性比较好</td>
+</tr>
+<tr>
+<td align="left">appendfsync  everysec</td>
+<td>默认推荐，每次异步记录一次</td>
+</tr>
+<tr>
+<td align="left">appendfsync no</td>
+<td>不同步</td>
+</tr>
+</tbody></table>
+<p><strong>配置重写触发机制：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">auto-aof-rewrite-percentage 100</span><br><span class="line">auto-aof-rewrite-min-size 64mb</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p><strong>参数说明：</strong>当AOF文件大小是上一次大小的一倍并且大于64mb时触发</p>
+<p><strong>根据AOF恢复数据：</strong></p>
+<p>正常情况下，将<code>appendonly.aof</code>文件复制到bin目录下，并且重启<code>redis</code>服务即可，在实际开发中，文件会存储在网络设备上，保障数据高可靠，如果因为某些原因导致<code>appendonly.aof</code>文件格式异常，从而导致数据还原失败，可以通过命令<code>redis-check-aof --fix appendonly.aof</code>进行修复</p>
+<p><strong>AOF的重写压缩机制：</strong></p>
+<p>AOF的工作原理将每次写操作追加到文件中，这样文件会出现很多冗余内容，所以redis新增了重写机制</p>
+<p>AOF可以生成一个新的AOF文件，新文件和老文件保存的信息一样，但体积更小，还可以做命令的合并，进而节省了redis的储存空间</p>
+<p><strong>AOF重写流程：</strong></p>
+<ul>
+<li>把主线程的内存拷贝一份给fork出来的<code>bgrewiteaof</code>子进程，这里面包含lredis最新的数据</li>
+<li>子进程将其中的数据进行重写。</li>
+<li>主线程在重写时候维护一个AOF重写缓冲区，将重写过程中的写操作记录，计入其中，保证重写后的AOF日志也能记录在重写过程中产生的新数据 </li>
+<li>用新AOF替换老AOF</li>
+</ul>
+<p><strong>AOF的优点和缺点：</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>优点</td>
+<td>数据的完整性和一致性更高</td>
+</tr>
+<tr>
+<td>缺点</td>
+<td>因为AOF记录的内容多，文件只会越来越大，数据恢复也会越来越慢</td>
+</tr>
+</tbody></table>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+      
+    </div>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+    
+    
+    
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://yuanyongliang1.github.io/2024/02/21/threadPool/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/photo.jpg">
+      <meta itemprop="name" content="Mr.yuan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永夜">
+      <meta itemprop="description" content="心有所向，无问东西">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 永夜">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2024/02/21/threadPool/" class="post-title-link" itemprop="url">threadPool</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-02-21 14:14:52" itemprop="dateCreated datePublished" datetime="2024-02-21T14:14:52+08:00">2024-02-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-02-23 10:12:50" itemprop="dateModified" datetime="2024-02-23T10:12:50+08:00">2024-02-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">多线程</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>551</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h4 id="线程池的核心参数以及具体场景下核心参数怎么设置合适"><a href="#线程池的核心参数以及具体场景下核心参数怎么设置合适" class="headerlink" title="线程池的核心参数以及具体场景下核心参数怎么设置合适"></a>线程池的核心参数以及具体场景下核心参数怎么设置合适</h4><ul>
+<li><p>核心线程数（Core Pool Size）：线程池中最小的线程数，即在线程池中一直保持的线程数量，不受空间时间的影响</p>
+</li>
+<li><p>最大线程数（MaximumPoolSize）：线程池维护线程的最大数量</p>
+</li>
+<li><p>空闲线程存活时间（Keep Alive Time）：当线程池中的线程数超过核心线程数时，多余的线程会被回收，此参数即为非核心线程的空闲时间，超过此时间将会被回收</p>
+</li>
+<li><p>空闲线程存货单位（unit ）</p>
+</li>
+<li><p>工作队列（Work Queue）：用于存储等待执行的任务队列，当线程池中的线程数达到核心线程数时，新的任务将被加入工作队列。</p>
+</li>
+<li><p>拒绝策略（Reject Execution Handler）：当线程池和工作队列都已经达到最大容量，无法再接收新的任务时，拒绝策略将被触发，常见的拒绝策略有抛出异常，直接丢弃任务，丢弃队列中最老的任务等</p>
+</li>
+<li><p>线程工厂（Thread Factory）：用于创建新的线程，可定制线程名字，线程组，优先级等</p>
+</li>
+</ul>
+<p>在不同的场景下设置核心参数，首先需要判断程序是CPU密集型还是I&#x2F;O密集型，CPU密集型是指CPU使用频率较高，也就是CPU经常计算一些复杂的运算，逻辑处理等，这时候一般吧核心线程数设置为CPU核心数就行，如果是I&#x2F;O密集型，核心线程数是CPU密集型的两倍</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://yuanyongliang1.github.io/2024/02/20/threeHandshake/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/photo.jpg">
+      <meta itemprop="name" content="Mr.yuan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永夜">
+      <meta itemprop="description" content="心有所向，无问东西">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 永夜">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2024/02/20/threeHandshake/" class="post-title-link" itemprop="url">threeHandshake</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-02-20 17:16:30" itemprop="dateCreated datePublished" datetime="2024-02-20T17:16:30+08:00">2024-02-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-02-23 10:13:04" itemprop="dateModified" datetime="2024-02-23T10:13:04+08:00">2024-02-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">网络</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>258</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h4 id="TCP三次握手，四次挥手"><a href="#TCP三次握手，四次挥手" class="headerlink" title="TCP三次握手，四次挥手"></a>TCP三次握手，四次挥手</h4><p>三次握手过程：</p>
+<p>客户端 —— 发送带有SYN标志的数据包——服务端   一次握手 Client进入syn_sent</p>
+<p>状态</p>
+<p>服务端——发送带有SYN&#x2F;ACK标志的数据包——客户端  二次握手服务端进入syn_rcvd</p>
+<p>客户端——发送带有ACK标志的数据包——服务端  三次握手 链接就进入Established状态</p>
+<p><strong>为什么三次</strong></p>
+<p>主要是为了建立可靠的通信信道，保证客户端与服务端同时具备发送，接收数据的能力</p>
+<p><strong>为什么两次不行？</strong></p>
+<ul>
+<li>防止已失效的请求报文又传送到了服务端，建立了多余的连接，浪费资源</li>
+<li>两次握手只能保证单向连接是通畅的，</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://yuanyongliang1.github.io/2024/02/18/ConcurrentHashMap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/photo.jpg">
+      <meta itemprop="name" content="Mr.yuan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永夜">
+      <meta itemprop="description" content="心有所向，无问东西">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 永夜">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2024/02/18/ConcurrentHashMap/" class="post-title-link" itemprop="url">一文读懂 ConcurrentHashMap 原理</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-02-18 12:54:28" itemprop="dateCreated datePublished" datetime="2024-02-18T12:54:28+08:00">2024-02-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-02-23 10:12:15" itemprop="dateModified" datetime="2024-02-23T10:12:15+08:00">2024-02-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/java%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java基础</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><strong>出现背景</strong></p>
+<h4 id="1、线程不安全的HashMap"><a href="#1、线程不安全的HashMap" class="headerlink" title="1、线程不安全的HashMap"></a>1、线程不安全的HashMap</h4><ul>
+<li>非原子操作：<code>HashMap</code>的操作不是原子性的，例如put()方法涉及到了多个步骤，包括计算hash值，查找或插入元素等，如果多个线程同时执行这些操作，就有可能导致数据不一致的情况。</li>
+<li>容量扩容，<code>HashMap</code>在扩容时，需要重新计算元素的hash值并分配存储位置，这个过程涉及到对原数组进行复制和重新插入元素的操作。如果在扩容期间有其他线程对<code>HashMap</code>进行并发修改，就可能导致数据丢失或出现异常</li>
+</ul>
+<h4 id="2、效率低下的HashTable"><a href="#2、效率低下的HashTable" class="headerlink" title="2、效率低下的HashTable"></a>2、效率低下的HashTable</h4><p><code>HashTable</code>容器使用<code>synchronized</code>来保证线程安全，但在线程竞争激烈的情况下<code>HashTable</code>的效率非常低，因为当一个线程正在访问<code>HashTable</code>的同步方法时，这时，另外一个线程也来访问<code>HashTable</code>的同步方法， 可能会进入阻塞和轮询状态。如线程A使用put进行添加元素的时候，线程B不但不能使用put方法添加元素，而且不能使用get方法获取元素，所以竞争越激烈效率越低，也就是说对于<code>HashTable</code>而言，<code>synchronized</code>是针对Hash整张表的，即每次锁住整张表让线程独占，相当于所有线程进行读写的时候都去竞争一把锁。</p>
+<h4 id="ConcurrentHashMap的锁分段技术"><a href="#ConcurrentHashMap的锁分段技术" class="headerlink" title="ConcurrentHashMap的锁分段技术"></a>ConcurrentHashMap的锁分段技术</h4><p>锁分段技术就是将数据分成一段一段的储存，然后给每一段数据分配一把锁，当一个线程占用锁访问一个段数据时，其他的段数据也是可以被其他线程访问的，另外，<code>ConcurrentHsahMap</code>是可以做到读取数据不加锁</p>
+<p><code>ConcurrentHashMap</code>是由<code>Segment</code>数据结构和<code>HashEntry</code>数据结构组成，<code>Segment</code>是一种可重入锁<code>ReentrantLock</code>，在<code>ConcurrentHashMap</code>中扮演锁的角色，<code>HashEntry</code>则用于存储键值对数据，一个<code>ConcurrentHashMap</code>中包含一个<code>Segment</code>数组，<code>Segment</code>结构和<code>HashMap</code>类似，是一种数组和链表结构，一个<code>Segment</code>里包含一个<code>HashEntry</code>数组，每个<code>HashEntry</code>是一个链表结构的元素，每个<code>Segment</code>守护着一个<code>HashEntry</code>数组里的元素，当对<code>HashEntry</code>数组中的数据进行修改时，必须先获得它对应的<code>Segment</code>锁</p>
+<h5 id="Segment"><a href="#Segment" class="headerlink" title="Segment"></a>Segment</h5><h5 id="我们再来具体了解一下Segment的数据结构"><a href="#我们再来具体了解一下Segment的数据结构" class="headerlink" title="我们再来具体了解一下Segment的数据结构"></a>我们再来具体了解一下Segment的数据结构</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">Segment</span>&lt;K,V&gt; <span class="keyword">extends</span> <span class="title class_">ReentrantLock</span> <span class="keyword">implements</span> <span class="title class_">Serializable</span> &#123; </span><br><span class="line">    <span class="keyword">transient</span> <span class="keyword">volatile</span> <span class="type">int</span> count; </span><br><span class="line">    <span class="keyword">transient</span> <span class="type">int</span> modCount; </span><br><span class="line">    <span class="keyword">transient</span> <span class="type">int</span> threshold; </span><br><span class="line">    <span class="keyword">transient</span> <span class="keyword">volatile</span> HashEntry&lt;K,V&gt;[] table; </span><br><span class="line">    <span class="keyword">final</span> <span class="type">float</span> loadFactor; </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>以下时是Segment里面成员变量的意义：</p>
+<ul>
+<li>count：Segment中元素的数量</li>
+<li>modCount：对table的大小造成影响的操作的数量（比如put或者remove操作）</li>
+<li>threshold：阈值，Segment里面元素的数量超过这个值依旧就会对Segment进行扩容</li>
+<li>table：链表数组，数组中的每一个元素代表了一个链表的头部</li>
+<li>loadFactor：负载因子，用于确定threshold</li>
+</ul>
+<p>count用来统计该段数据的个数，它是volatile变量，它用来协调修改和读取操作，以保证读取操作能够读取到几乎最新修改的值，协调方法是这样的，每次修改操作做了结构上的变化，如增加&#x2F;删除节点（修改节点的值不算结构上的变化），都要写count值，每次读取操作开始都要读取count的值。这利用了Java5中对volatile语义的增强，对同一个volatile变量的写和读存在happens-begore关系。modCount统计段数据改变的次数，主要为了检测对多个段进行遍历过程中某个段是否发生改变。threashold用来表示需要进行rehash的界限值。 table数组存储段中节点，每个数组是个hash链，用HashEntry表示。table也是volatile，这使得能够读取到最新的table值而不需要同步。loadFactor表示负载因子。</p>
+<h5 id="HashEntry"><a href="#HashEntry" class="headerlink" title="HashEntry"></a><strong>HashEntry</strong></h5><p>Segment中的元素是以HashEntry的形式存放在链表数组中的，看一下HashEntry的结构：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">HashEntry</span>&lt;K,V&gt; &#123; </span><br><span class="line">    <span class="keyword">final</span> K key; </span><br><span class="line">    <span class="keyword">final</span> <span class="type">int</span> hash; </span><br><span class="line">    <span class="keyword">volatile</span> V value; </span><br><span class="line">    <span class="keyword">final</span> HashEntry&lt;K,V&gt; next; </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>可以看到<code>HashEntry</code>的一个特点，除了value外，其他的几个变量都是final修饰的，这意味着不能从hash链表的尾部和中部进行添加或删除节点，因为这需要修改next引用值，所有的节点的修改只能从头部开始。对于put操作，可以一律添加到hash链表的头部。但是对于remove操作，可能需要从中间删除一个节点，这时候就需要把将要删除的节点的前面的节点都复制一遍，最后一个节点指向要删除的节点的下一个节点。为了确保读操作能看到最新的值，将value设置为<code>volatile</code>，这避免了加锁。</p>
+<h4 id="ConcurrentHashMap-JDK1-8与JDK1-7的区别"><a href="#ConcurrentHashMap-JDK1-8与JDK1-7的区别" class="headerlink" title="ConcurrentHashMap JDK1.8与JDK1.7的区别"></a>ConcurrentHashMap JDK1.8与JDK1.7的区别</h4><p>JDK1.8 中 <code>ConcurrentHashMap</code> 类取消了 <code>Segment </code>分段锁，采用 <code>CAS </code>+ <code>synchronized </code>来保证并发安全，数据结构跟 jdk1.8 中 <code>HashMap </code>结构类似，都是<strong>数组 + 链表(当链表长度大于8时，链表结构转为红黑二叉树</strong>)结构。<code>ConcurrentHashMap</code> 中 <code>synchronized</code> 只锁定当前链表或红黑二叉树的首节点，只要节点 hash 不冲突，就不会产生并发，相比 JDK1.7 的 <code>ConcurrentHashMap</code> 效率又提升了 N 倍！</p>
+<h4 id="ConcurrentHashMap的初始化"><a href="#ConcurrentHashMap的初始化" class="headerlink" title="ConcurrentHashMap的初始化"></a>ConcurrentHashMap的初始化</h4><p>我们结合一下源码来分析一下ConcurrentHashMap的实现，先看初始化方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">ConcurrentHashMap</span><span class="params">(<span class="type">int</span> initialCapacity, </span></span><br><span class="line"><span class="params">                         <span class="type">float</span> loadFactor, <span class="type">int</span> concurrencyLevel)</span> &#123; </span><br><span class="line">    <span class="keyword">if</span> (!(loadFactor &gt; <span class="number">0</span>) || initialCapacity &lt; <span class="number">0</span> || concurrencyLevel &lt;= <span class="number">0</span>) </span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(); </span><br><span class="line">    <span class="keyword">if</span> (concurrencyLevel &gt; MAX_SEGMENTS) </span><br><span class="line">        concurrencyLevel = MAX_SEGMENTS; </span><br><span class="line">    <span class="comment">// Find power-of-two sizes best matching arguments </span></span><br><span class="line">    <span class="type">int</span> <span class="variable">sshift</span> <span class="operator">=</span> <span class="number">0</span>; </span><br><span class="line">    <span class="type">int</span> <span class="variable">ssize</span> <span class="operator">=</span> <span class="number">1</span>; </span><br><span class="line">    <span class="keyword">while</span> (ssize &lt; concurrencyLevel) &#123; </span><br><span class="line">        ++sshift; </span><br><span class="line">        ssize &lt;&lt;= <span class="number">1</span>; </span><br><span class="line">    &#125; </span><br><span class="line">    segmentShift = <span class="number">32</span> - sshift; </span><br><span class="line">    segmentMask = ssize - <span class="number">1</span>; </span><br><span class="line">    <span class="built_in">this</span>.segments = Segment.newArray(ssize); </span><br><span class="line">    <span class="keyword">if</span> (initialCapacity &gt; MAXIMUM_CAPACITY) </span><br><span class="line">        initialCapacity = MAXIMUM_CAPACITY; </span><br><span class="line">    <span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> initialCapacity / ssize; </span><br><span class="line">    <span class="keyword">if</span> (c * ssize &lt; initialCapacity) </span><br><span class="line">        ++c; </span><br><span class="line">    <span class="type">int</span> <span class="variable">cap</span> <span class="operator">=</span> <span class="number">1</span>; </span><br><span class="line">    <span class="keyword">while</span> (cap &lt; c) </span><br><span class="line">        cap &lt;&lt;= <span class="number">1</span>; </span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="built_in">this</span>.segments.length; ++i) </span><br><span class="line">        <span class="built_in">this</span>.segments[i] = <span class="keyword">new</span> <span class="title class_">Segment</span>&lt;K,V&gt;(cap, loadFactor); </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>CurrentHashMap</code>的初始化一共有三个参数，一个<code>initialCapacity</code>，表示初始的容量，一个<code>loadFactor</code>，表示负载参数，最后一个是<code>concurrentLevel</code>，代表<code>ConcurrentHashMap</code>内部<code>Segment</code>的数量，<code>ConcurrentLevel</code>一经指定，不可该变，后续如果<code>ConcurrentHashMap</code>的元素数量增加导致<code>ConcurrentHashMap</code>需要扩容，<code>ConcurrentHashMap</code>不会增加<code>Segment</code>的数量，只会增加<code>Segment</code>中链表数组的容量，这样扩容的好处是不需要对<code>ConcurrentHashMap</code>中所有的元素做rehash，只需要对<code>Segment</code>中的元素做一次rehash就可以了。</p>
+<p>默认初始表的容量，必须是2的幂（至少为1），最大为16.</p>
+<h4 id="ConcurrentHashMap的get操作"><a href="#ConcurrentHashMap的get操作" class="headerlink" title="ConcurrentHashMap的get操作"></a>ConcurrentHashMap的get操作</h4><p>在java8中，<code>concurrentHashMap</code>的get操作是不需要加锁的。</p>
+<p><code>concurrentHashMap</code>的设计目标是支持高并发操作，所以在实现中，尽可能地减少锁的使用。在java8中，为了提高并发性能，<code>concurrentHashMap</code>使用node数组和链表&#x2F;红黑树 ，而且get操作完全无锁。</p>
+<p>get方法主要是通过<code>volatile</code>关键字和<code>Unsafe</code>类来保证的，在<code>ConcurrentHashMap</code>中，Node数组和Node节点的value字段都是用<code>volatile</code>关键字修饰的，这可以保证线程间的可见性， 也就是说当一个线程修改了数据，其他线程可以立即看到修改后的值，另外，Unsafe类提供了一种低级别的，直接操作内存的方式，可以用来实现无锁的并发操作。</p>
+<h5 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h5><p><code>volatile</code>是Java中的一个关键字，它用于修饰变量，当一个变量被<code>volatile</code>修饰后，它保证了以下两个主要特征：</p>
+<ul>
+<li>可见性：当一个线程修改了一个<code>volatile</code>变量的值，其他线程可以立即看到这个修改，这是因为volatile变量的读写都会直接操作主内存，而不是CPU缓存，从而保证了在多线程环境下的数据一致性</li>
+<li>有序性：<code>volatile</code>关键字禁止指令重排序优化。也就是说，对<code>volatile</code>变量的读写操作，都会按照代码执行顺序进行。</li>
+</ul>
+<h5 id="unsafe"><a href="#unsafe" class="headerlink" title="unsafe"></a>unsafe</h5><p>在Java中，<code>Unsafe</code>是一个类，全名为<code>sun.misc.Unsafe</code>。这个类提供了一些可以直接操作内存和线程的底层方法，因此使用它可以进行一些非常底层的操作，比如直接访问和修改对象的字段，甚至是没有被<code>public</code>修饰的字段。</p>
+<p>以下是一些<code>Unsafe</code>类提供的方法的例子：</p>
+<ul>
+<li><code>allocateMemory</code>、<code>freeMemory</code>和<code>reallocateMemory</code>：可以直接分配、释放和重新分配内存，就像C语言的<code>malloc</code>、<code>free</code>和<code>realloc</code>函数一样。</li>
+<li><code>putInt</code>、<code>getInt</code>等：可以直接读写内存。</li>
+<li><code>compareAndSwapInt</code>、<code>compareAndSwapLong</code>等：可以进行原子操作。</li>
+<li><code>park</code>和<code>unpark</code>：可以挂起和恢复线程。</li>
+</ul>
+<p>虽然<code>Unsafe</code>类提供了强大的功能，但是它的使用是有风险的，因为不正确的使用可能会导致程序崩溃，或者产生难以调试的问题。因此，<code>Unsafe</code>类并不是公开的API，它主要是为Java的核心类库提供服务的。在应用程序中，我们应该尽量避免使用<code>Unsafe</code>类，而是使用更高级的、更安全的API。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://yuanyongliang1.github.io/2023/09/16/encryptionTest/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/photo.jpg">
+      <meta itemprop="name" content="Mr.yuan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永夜">
+      <meta itemprop="description" content="心有所向，无问东西">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 永夜">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/09/16/encryptionTest/" class="post-title-link" itemprop="url">日记</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-09-16 17:05:26" itemprop="dateCreated datePublished" datetime="2023-09-16T17:05:26+08:00">2023-09-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-02-22 17:54:17" itemprop="dateModified" datetime="2024-02-22T17:54:17+08:00">2024-02-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%8A%A0%E5%AF%86/" itemprop="url" rel="index"><span itemprop="name">加密</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          这里有一些加密的东西,密码需要继续阅读。
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/09/16/encryptionTest/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://yuanyongliang1.github.io/2023/09/16/instruct/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/photo.jpg">
+      <meta itemprop="name" content="Mr.yuan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永夜">
+      <meta itemprop="description" content="心有所向，无问东西">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 永夜">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/09/16/instruct/" class="post-title-link" itemprop="url">指令信息</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-09-16 14:01:56" itemprop="dateCreated datePublished" datetime="2023-09-16T14:01:56+08:00">2023-09-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-02-23 14:03:52" itemprop="dateModified" datetime="2024-02-23T14:03:52+08:00">2024-02-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%8A%A0%E5%AF%86/" itemprop="url" rel="index"><span itemprop="name">加密</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          这里有一些加密的东西,密码需要继续阅读。
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/09/16/instruct/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://yuanyongliang1.github.io/2023/09/12/linuxOrder/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/photo.jpg">
+      <meta itemprop="name" content="Mr.yuan">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="永夜">
+      <meta itemprop="description" content="心有所向，无问东西">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 永夜">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/09/12/linuxOrder/" class="post-title-link" itemprop="url">linuxOrder</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-09-12 10:25:56" itemprop="dateCreated datePublished" datetime="2023-09-12T10:25:56+08:00">2023-09-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-02-28 11:11:23" itemprop="dateModified" datetime="2024-02-28T11:11:23+08:00">2024-02-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="1．Linux管理文件和目录的命令"><a href="#1．Linux管理文件和目录的命令" class="headerlink" title="1．Linux管理文件和目录的命令"></a>1．Linux管理文件和目录的命令</h2><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>pwd</td>
+<td>显当前目录</td>
+</tr>
+<tr>
+<td>ls</td>
+<td>查看目录下的内容</td>
+</tr>
+<tr>
+<td>cd</td>
+<td>改变所在目录</td>
+</tr>
+<tr>
+<td>cat</td>
+<td>显示文件的内容</td>
+</tr>
+<tr>
+<td>grep</td>
+<td>在文件中查找某字符</td>
+</tr>
+<tr>
+<td>cp</td>
+<td>复制文件</td>
+</tr>
+<tr>
+<td>touch</td>
+<td>创建文件</td>
+</tr>
+<tr>
+<td>mv</td>
+<td>移动文件</td>
+</tr>
+<tr>
+<td>rm</td>
+<td>删除文件</td>
+</tr>
+<tr>
+<td>rmdir</td>
+<td>删除目录</td>
+</tr>
+<tr>
+<td>vi</td>
+<td>编辑文件</td>
+</tr>
+</tbody></table>
+<h3 id="1-1-pwd命令"><a href="#1-1-pwd命令" class="headerlink" title="1.1 pwd命令"></a>1.1 pwd命令</h3><p>该命令的英文解释为print working directory(打印工作目录)。输入pwd命令，Linux会输出当前目录。</p>
+<h3 id="1-2-cd命令-用来改变所在目录。"><a href="#1-2-cd命令-用来改变所在目录。" class="headerlink" title="1.2 cd命令 用来改变所在目录。"></a>1.2 cd命令 用来改变所在目录。</h3><p>cd &#x2F; 转到根目录中<br>        cd ~ 转到&#x2F;home&#x2F;user用户目录下<br>        cd &#x2F;usr 转到根目录下的usr目录中————-绝对路径<br>        cd test 转到当前目录下的test子目录中——-相对路径</p>
+<h3 id="1-3-ls命令-用来查看目录的内容。"><a href="#1-3-ls命令-用来查看目录的内容。" class="headerlink" title="1.3 ls命令 用来查看目录的内容。"></a>1.3 ls命令 用来查看目录的内容。</h3><p>选项 含义<br>        -a 列举目录中的全部文件，包括隐藏文件<br>        -l 列举目录中的细节，包括权限、所有者、组群、大小、创建日期、文件是否是链接等<br>        -f 列举的文件显示文件类型<br>        -r 逆向，从后向前地列举目录中内容<br>        -R 递归，该选项递归地列举当前目录下所有子目录内的内容<br>        -s 大小，按文件大小排序<br>        -h 以人类可读的方式显示文件的大小，如用K、M、G作单位</p>
+<p>ls -l examples.doc 列举文件examples.doc的所有信息</p>
+<h3 id="1-4-cat命令"><a href="#1-4-cat命令" class="headerlink" title="1.4 cat命令"></a>1.4 cat命令</h3><p>cat命令可以用来合并文件，也可以用来在屏幕上显示整个文件的内容。<br>        cat snow.txt 该命令显示文件snow.txt的内容，ctrl+D退出cat。</p>
+<h3 id="1-5-grep命令-最大功能是在一堆文件中查找一个特定的字符串。"><a href="#1-5-grep命令-最大功能是在一堆文件中查找一个特定的字符串。" class="headerlink" title="1.5 grep命令 最大功能是在一堆文件中查找一个特定的字符串。"></a>1.5 grep命令 最大功能是在一堆文件中查找一个特定的字符串。</h3><p>grep money test.txt<br>        以上命令在test.txt中查找money这个字符串，grep查找是区分大小写的。</p>
+<h3 id="1-6-touch命令"><a href="#1-6-touch命令" class="headerlink" title="1.6 touch命令"></a>1.6 touch命令</h3><p>touch命令用来创建新文件，他可以创建一个空白的文件，可以在其中添加文本和数据。<br>        touch newfile 该命令创建一个名为newfile的空白文件。</p>
+<h3 id="1-7-cp命令-用来拷贝文件，要复制文件，输入命令："><a href="#1-7-cp命令-用来拷贝文件，要复制文件，输入命令：" class="headerlink" title="1.7 cp命令 用来拷贝文件，要复制文件，输入命令："></a>1.7 cp命令 用来拷贝文件，要复制文件，输入命令：</h3><p>cp<br>        cp t.txt Document&#x2F;t 该命令将把文件t.txt复制到Document目录下，并命名为t。<br>        选项 含义<br>        -I 互动：如果文件将覆盖目标中的文件，他会提示确认<br>        -r 递归：这个选项会复制整个目录树、子目录以及其他<br>        -v 详细：显示文件的复制进度</p>
+<h3 id="1-8-mv命令-用来移动文件。"><a href="#1-8-mv命令-用来移动文件。" class="headerlink" title="1.8 mv命令 用来移动文件。"></a>1.8 mv命令 用来移动文件。</h3><p>选项 说明<br>        -I 互动：如果选择的文件会覆盖目标中的文件，他会提示确认<br>        -f 强制：它会超越互动模式，不提示地移动文件，属于很危险的选项<br>        -v 详细：显示文件的移动进度<br>        mv t.txt Document 把文件t.txt 移动到目录Document中。</p>
+<h3 id="1-9-rm命令-用来删除文件。"><a href="#1-9-rm命令-用来删除文件。" class="headerlink" title="1.9 rm命令 用来删除文件。"></a>1.9 rm命令 用来删除文件。</h3><p>选项 说明<br>        -I 互动：提示确认删除<br>        -f 强制：代替互动模式，不提示确认删除<br>        -v 详细：显示文件的删除进度<br>        -r 递归：将删除某个目录以及其中所有的文件和子目录<br>        rm t.txt 该命令删除文件t.txt</p>
+<h3 id="1-10-rmdir命令-用来删除目录。"><a href="#1-10-rmdir命令-用来删除目录。" class="headerlink" title="1.10 rmdir命令 用来删除目录。"></a>1.10 rmdir命令 用来删除目录。</h3><h3 id="1-11-find命令-用来查询文件"><a href="#1-11-find命令-用来查询文件" class="headerlink" title="1.11 find命令  用来查询文件"></a>1.11 find命令  用来查询文件</h3><p><strong>按照文件名搜索</strong></p>
+<p>选项：<br>        -name    按照文件名搜索<br>        -iname   按照文件名搜索，不区分文件名大小写<br>        -inum    按照inode号搜索</p>
+<p>如要在<code>/home/linuxize</code>目录下搜索一个名为<code>document.pdf</code>的文件，你可以使用下面的命令。</p>
+<blockquote>
+<p>find &#x2F;home&#x2F;linuxize -type f -name document.pdf</p>
+</blockquote>
+<p><strong>按照文件类型搜索</strong></p>
+<p>选项：<br>        -type d  查找目录<br>        -type f  查找普通文件<br>        -type l  查找软链接文件</p>
+<p>例如，要在<code>/var/log/nginx</code>目录下找到所有以<code>.log.gz</code>结尾的文件，你可以使用一下命令</p>
+<blockquote>
+<p>​	find &#x2F;var&#x2F;log&#x2F;nginx -type f -name ‘*.log.gz’</p>
+</blockquote>
+<p><strong>使用案例</strong></p>
+<blockquote>
+<p>find -name java*                     # 在当前目录下查找以java开始的文件<br>        find -name java* fprint file         # 在当前目录下查找以java开始的文件，并把结果输出到file中<br>        find -name ap* -o -name may*         # 查找以ap或may开头的文件</p>
+</blockquote>
+<h3 id="1-12-vi-是UNIX操作系统和类UNIX操作系统中最通用的全屏幕纯文本编辑器。Linux中的vi编辑器叫vim，它是vi的增强版（vi-Improved），与vi编辑器完全兼容，而且实现了很多增强功能。进入vi的命令"><a href="#1-12-vi-是UNIX操作系统和类UNIX操作系统中最通用的全屏幕纯文本编辑器。Linux中的vi编辑器叫vim，它是vi的增强版（vi-Improved），与vi编辑器完全兼容，而且实现了很多增强功能。进入vi的命令" class="headerlink" title="1.12 vi 是UNIX操作系统和类UNIX操作系统中最通用的全屏幕纯文本编辑器。Linux中的vi编辑器叫vim，它是vi的增强版（vi Improved），与vi编辑器完全兼容，而且实现了很多增强功能。进入vi的命令"></a>1.12 vi 是UNIX操作系统和类UNIX操作系统中最通用的全屏幕纯文本编辑器。Linux中的vi编辑器叫vim，它是vi的增强版（vi Improved），与vi编辑器完全兼容，而且实现了很多增强功能。进入vi的命令</h3><p>vi filename :打开或新建文件,并将光标置于第一行首<br>        vi n filename ：打开文件,并将光标置于第n行首<br>        vi filename ：打开文件,并将光标置于一行首<br>        vi &#x2F;pattern filename：打开文件,并将光标置于第一个与pattern匹配的串处<br>        vi -r filename ：在上次正用vi编辑时发生系统崩溃,恢复filename<br>        vi filename….filename ：打开多个文件,依次进行编辑</p>
+<p>屏幕翻滚类命令<br>        Ctrl u：向文件首翻半屏<br>        Ctrl d：向文件尾翻半屏<br>        Ctrl f：向文件尾翻一屏<br>        Ctrl＋b；向文件首翻一屏<br>        nz：将第n行滚至屏幕顶部,不指定n时将当前行滚至屏幕顶部.<br>        插入文本类命令<br>        i ：在光标前<br>        I ：在当前行首<br>        a：光标后<br>        A：在当前行尾<br>        o：在当前行之下新开一行<br>        O：在当前行之上新开一行<br>        r：替换当前字符<br>        R：替换当前字符及其后的字符,直至按ESC键<br>        s：从当前光标位置处开始,以输入的文本替代指定数目的字符</p>
+<p>保存命令<br>        按ESC键 跳到命令模式，然后：<br>        :w 保存文件但不退出vi<br>        :w file 将修改另外保存到file中，不退出vi<br>        :w! 强制保存，不推出vi<br>        :wq 保存文件并退出vi<br>        :wq! 强制保存文件，并退出vi<br>        :q 不保存文件，退出vi<br>        :q! 不保存文件，强制退出vi<br>        :e! 放弃所有修改，从上次保存文件开始再编辑</p>
 
       
     </div>
@@ -436,14 +1341,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">0k</span>
+    <span title="站点总字数">15k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1 分钟</span>
+    <span title="站点阅读时长">13 分钟</span>
   </span>
 </div>
 <div class="busuanzi-count">
